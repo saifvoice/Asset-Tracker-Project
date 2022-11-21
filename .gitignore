@@ -3,3 +3,5 @@ venv
 *.pyc
 .DS_Store
 .env
+jotter.py
+local_db.ini

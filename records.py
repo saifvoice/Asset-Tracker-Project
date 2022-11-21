@@ -18,9 +18,10 @@ config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database
 engine = engine_from_config(config, prefix='db.')
 
 df = pd.read_sql_table('customer_profile', engine)
+df.drop(columns=['id', 'asset_count'], inplace=True)
 engine.dispose()
 
-df.columns = ['ID', 'Name', 'Address', 'Phone No.', 'National ID.', 'Asset(s)', 'Latitude', 'Longitude']
+df.columns = ['Name', 'Address', 'Phone No.', 'Product ID.', 'Latitude', 'Longitude']
 
 
 customer_records = dbc.Container(
@@ -50,13 +51,8 @@ customer_records = dbc.Container(
                     [
                         {
                             'if': {'column_id': c}, 'textAlign':'right' 
-                        } for c in ['Phone No.', 'National ID.', 'Asset(s)']
-                    ] +
-                    [
-                        {
-                            'if': {'column_id': 'ID'}, 'textAlign':'center'
-                        }
-                    ]
+                        } for c in ['Phone No.', 'Product ID.']
+                    ] 
                 ),
             ))
         ], class_name='col-xs-12 col-lg-10 shadow rounded')

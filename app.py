@@ -27,10 +27,10 @@ map_api = 'pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiR
 # config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
 # engine = engine_from_config(config, prefix='db.')
 # engine.dispose()
-content = ['home', 'enrol', 'records']
+content = ['home', 'register', 'records']
 nav = dbc.Nav([
         dbc.NavItem(dbc.NavLink("Home", id='home', href='/home'),  class_name='me-1'),
-        dbc.NavItem(dbc.NavLink("Enrol", id='enrol', href='/enrol'),  class_name='me-1'),
+        dbc.NavItem(dbc.NavLink("Register", id='register', href='/register'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Records", id='records', href='/records'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Logout", id='logout', href='/login'), class_name='me-1')
 ],navbar=True, justified=True, class_name='ms-auto fs-5')
@@ -87,7 +87,7 @@ main_layout = dbc.Container([
         ),
     dbc.Row([
         dbc.Col([
-            html.H3('Powered by TCBN', className='footer_text')
+            html.H3('Powered by Metaverse®', className='footer_text')
         ], class_name='text-center footer', style=FOOTER_STYLE)
     ], class_name='d-flex justify-content-center')    
 ], fluid=True)
@@ -113,7 +113,7 @@ def query_data(n):
 @app.callback(
     Output('content_container', 'children'),
     Output('home', 'active'),
-    Output('enrol', 'active'),
+    Output('register', 'active'),
     Output('records', 'active'),
     Output('logout', 'active'),
     Input('location', 'pathname')
@@ -123,7 +123,7 @@ def display_content(pathname):
     if page in content:
         if page == 'home':
             return home_layout, True, False, False, False
-        if page == 'enrol':
+        if page == 'register':
             return form_layout, False, True, False, False
         if page == 'records':
             return customer_records, False, False, True, False
@@ -202,7 +202,7 @@ def dropdown_items(value, data):
     State('form_nin', 'value'),
     State('form_lat', 'value'),
     State('form_lon', 'value'),
-    State('asset_dropdown', 'value'),
+    # State('asset_dropdown', 'value'),
     prevent_initial_call=True
 )
 def enrolment_form(n, name, address, phone, nin, lat, lon, asset):
@@ -263,7 +263,7 @@ def customer_info(n, clickdata, data, by, value):
             * **Name:** {df['name'].item()}
             * **Address:** {df['address'].item()}
             * **Phone No.:** {df['phone'].item()}
-            * **National ID: ** {df['nin'].item()}
+            * **Product ID.: ** {df['nin'].item()}
             * **No of assets in posession: ** {df['asset_count'].item()}
             '''
     
@@ -274,7 +274,7 @@ def customer_info(n, clickdata, data, by, value):
             * **Name:** {df['name'].item()}
             * **Address:** {df['address'].item()}
             * **Phone No.:** {df['phone'].item()}
-            * **National ID: ** {df['nin'].item()}
+            * **Product ID.: ** {df['nin'].item()}
             * **No of assets in posession: ** {df['asset_count'].item()}
             '''
     elif clickdata == None and value != None:
@@ -284,7 +284,7 @@ def customer_info(n, clickdata, data, by, value):
             * **Name:** {df['name'].item()}
             * **Address:** {df['address'].item()}
             * **Phone No.:** {df['phone'].item()}
-            * **National ID: ** {df['nin'].item()}
+            * **Product ID.: ** {df['nin'].item()}
             * **No of assets in posession: ** {df['asset_count'].item()}
             '''
     else:
@@ -294,7 +294,7 @@ def customer_info(n, clickdata, data, by, value):
             * **Name:** 
             * **Address:** 
             * **Phone No.:** 
-            * **National ID: ** 
+            * **Product ID.: ** 
             * **No of assets in posession: ** 
             '''
 

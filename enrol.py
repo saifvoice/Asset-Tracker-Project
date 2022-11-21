@@ -45,8 +45,8 @@ phone_input = html.Div(
 
 nin_input = html.Div(
     [
-        dbc.Label("National ID No.", html_for="form_nin"),
-        dbc.Input(type="number", id="form_nin", placeholder="Enter customer NIN")
+        dbc.Label("Product ID.", html_for="form_nin"),
+        dbc.Input(type="number", id="form_nin", placeholder="Enter Product ID.")
     ],
     className="mb-3")
 
@@ -61,23 +61,23 @@ coordinates_input = html.Div(
     ],
     className="mb-3")
 
-assets = html.Div(
-    [
-        dbc.Label("Asset Given", html_for="asset_dropdown"),
-        dcc.Dropdown(
-            id="asset_dropdown",
-            options=[
-                {"label": "asset 1", "value": "asset 1"},
-                {"label": "asset 2", "value": "asset 2"},
-            ],
-        ),
-    ],
-    className="mb-3",
-)
+# assets = html.Div(
+#     [
+#         dbc.Label("Asset Given", html_for="asset_dropdown"),
+#         dcc.Dropdown(
+#             id="asset_dropdown",
+#             options=[
+#                 {"label": "asset 1", "value": "asset 1"},
+#                 {"label": "asset 2", "value": "asset 2"},
+#             ],
+#         ),
+#     ],
+#     className="mb-3",
+# )
 
 form = dbc.Form([
     html.H3('Customer Enrolment Form', className='text-center'),
-    name_input, address_input, phone_input, nin_input, coordinates_input, assets,
+    name_input, address_input, phone_input, nin_input, coordinates_input,
     html.Br(),
     html.Br(),
     dbc.Col(dbc.Button(id='enrol_button', children='Enrol', class_name='search_btn'), class_name='d-flex justify-content-center'),
