@@ -80,7 +80,7 @@ form = dbc.Form([
     name_input, address_input, phone_input, nin_input, coordinates_input, assets,
     html.Br(),
     html.Br(),
-    dbc.Col(dbc.Button(id='enrol_button', children='Enrol', class_name='button'), class_name='mx-auto'),
+    dbc.Col(dbc.Button(id='enrol_button', children='Enrol', class_name='search_btn'), class_name='d-flex justify-content-center'),
     dbc.Col(dbc.Alert(id='enrolment_alert', fade=True, color='success', duration=3000, is_open=False)),
     html.Br(),
 ], id='enrol_form')
