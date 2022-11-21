@@ -115,3 +115,18 @@
     background-color: #606368;
     color: whitesmoke;
   }
+
+  .export {
+    color: #303030;
+    width: 200px;
+    margin-top: 20px;
+    background-color: #dee2e6;
+    font-weight: bold;
+    border: 1px solid;
+    border-color: #303030;
+  }
+  
+  .export:hover {
+    background-color: #606368;
+    color: whitesmoke;
+  }

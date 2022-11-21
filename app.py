@@ -6,7 +6,6 @@ from enrol import form_layout
 from urllib.parse import unquote
 import configparser
 from sqlalchemy import create_engine, engine_from_config
-import mysql.connector
 import pandas as pd
 import random
 import plotly.express as px
@@ -22,11 +21,11 @@ username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']
 database = config['USER_DATA']['database']
 
-#### Connection ####
-config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
-engine = engine_from_config(config, prefix='db.')
-engine.dispose()
-content = ['home', 'enrol']
+# #### Connection ####
+# config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
+# engine = engine_from_config(config, prefix='db.')
+# engine.dispose()
+content = ['home', 'enrol', 'records']
 nav = dbc.Nav([
         dbc.NavItem(dbc.NavLink("Home", id='home', href='/home'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Enrol", id='enrol', href='/enrol'),  class_name='me-1'),
@@ -109,6 +108,7 @@ def query_data(n):
 )
 def display_content(pathname):
     page = unquote(pathname[1:])
+    print(page)
     if page in content:
         if page == 'home':
             return home_layout, True, False, False, False

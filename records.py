@@ -29,6 +29,10 @@ customer_records = dbc.Container(
             dbc.Spinner(dash_table.DataTable(
                 id='genco_table',
                 data = df.to_dict('records'),
+                style_cell = {'minWidth' :95, 'maxWidth':130},
+                style_data = {'whiteSpace': 'normal', 'height':'auto', 'color': '#303030'},
+                style_data_conditional = [{'if': {'row_index': 'odd'},'backgroundColor': '#EBEBE8'}],
+                style_header = {'textAlign': 'center', 'whiteSpace': 'normal', 'height': 'auto', 'fontWeight': 'bold', 'color': '#222222', 'backgroundColor': '#EBEBE8'},  
                 columns=[{'name':i, 'id':i} for i in df.columns],
                 filter_action='native',
                 sort_action='native',
