@@ -39,7 +39,7 @@ animation= {'frame': { 'redraw': False, }, 'transition': { 'duration': 1000, 'ea
 
 home_layout = dbc.Container([
     dbc.Row([
-        dbc.Col(dcc.Graph(id='customer_map', className='card', animate=True, animation_options=animation), class_name='map col-sm-12 col-lg-9 rounded h-auto'),
+        dbc.Col(dcc.Graph(id='customer_map', className='card', animate=True, animation_options=animation, style={'height': '75vh'}), class_name='map h-auto col-sm-12 col-lg-9 rounded h-auto'),
         dbc.Col([
             dcc.Dropdown(
                 options=[
@@ -63,7 +63,7 @@ home_layout = dbc.Container([
         ], class_name='card')
         ], align='center', class_name='text-center col-sm-6 col-lg-3')
     ], class_name='align-top')
-], fluid=True, class_name='mt-5 py-4 rounded')
+], fluid=True, class_name='mt-3 py-4 rounded')
 
 # engine.dispose()
 

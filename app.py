@@ -15,11 +15,13 @@ from flask_caching import Cache
 
 ##### Database Configuration ######
 config = configparser.ConfigParser()
-config.read('cloud_db.ini')
+config.read('local_db.ini')
 hostname = config['HOST_DATA']['hostname']
 username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']
 database = config['USER_DATA']['database']
+
+map_api = 'pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiRSI-AleU_c_m2tHWAP7Q'
 
 # #### Connection ####
 # config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
@@ -39,13 +41,13 @@ navbar = dbc.Navbar(
             html.A([
                 dbc.Row([
                     dbc.Col([
-                        html.Img(src='assets/tbcn-logo.png', width=200, height=100,className='navbar-brand rounded float-start'),
+                        html.Img(src='assets/tbcn-logo2.png', width=200, height=100,className='navbar-brand rounded float-start'),
                     ]),
                     dbc.Col(html.Img(src='assets/atmosfair.png', width=200, height=100,className='navbar-brand rounded float-start'))
                 ], align='center', className='g-0'),
             ], href='/'),
         ], align='start', class_name='col-3'),
-        dbc.Col(html.H1('Save-80 Asset Tracker'), class_name='col-6 text-center'),
+        dbc.Col(html.H1('Save-80 Geolocator'), class_name='col-6 text-center'),
         dbc.Col([
             dbc.NavbarToggler(id='nav-toggler', n_clicks=0),
             dbc.Collapse(nav, id='navbar-collapse', is_open=False, navbar=True)
@@ -65,22 +67,32 @@ server = app.server
 #     'CACHE_THRESHOLD': 5})
 fss = FileSystemStore(threshold=5)
 
+FOOTER_STYLE = {
+    "position": "fixed",
+    "bottom": 0,
+    "left": 0,
+    "right": 0,
+    "height": "8rem",
+    "padding": "1rem 1rem",
+    "background-color": "gray",
+}
+
 main_layout = dbc.Container([
     dcc.Store(id='cached_data'),
     dcc.Location(id='location'),
     dcc.Interval(id='query_data', interval=10*1000),
     dbc.Row(navbar, class_name='sticky-top'),
     dbc.Row(
-            dbc.Col(id='content_container', xl={'size':10, 'offset':1}, lg={'size':10, 'offset':1})
+            dbc.Col(id='content_container', lg={'size':12}, class_name='content-con')
         ),
     dbc.Row([
         dbc.Col([
-            html.H3('Powered by TCBN')
-        ], class_name='text-center')
-    ], class_name='d-flex justify-content-center footer navbar')    
+            html.H3('Powered by TCBN', className='footer_text')
+        ], class_name='text-center footer', style=FOOTER_STYLE)
+    ], class_name='d-flex justify-content-center')    
 ], fluid=True)
 
-
+#xl={'size':10, 'offset':1}, lg={'size':10, 'offset':1}
 app.validation_layout = html.Div([main_layout, home_layout, form_layout, customer_records])
 
 app.layout = main_layout
@@ -108,7 +120,6 @@ def query_data(n):
 )
 def display_content(pathname):
     page = unquote(pathname[1:])
-    print(page)
     if page in content:
         if page == 'home':
             return home_layout, True, False, False, False
@@ -132,11 +143,11 @@ def plot_map_points(data, clickdata):
             hover_name='name', custom_data=['id', 'name', 'address', 'phone', 'nin', 'asset_count', 'latitude', 'longitude'],
             hover_data={'name': False, 'latitude':False, 'longitude':False, 'asset_count':True},
             zoom=6, center=dict(lat=9.0765, lon=8),
-            mapbox_style = 'carto-positron', height=800, )
+            )
         customer_map.update_traces(marker=dict(size=15, color='#fe6b6b'))
         customer_map.update_layout(
             legend =dict(title_text = '', orientation='h', x=0.4, font_size=15, font_color='#FFFFFF'), paper_bgcolor='#E5ECF6',
-            margin = dict(l = 0, r = 0, t = 0, b = 0)
+            margin = dict(l = 0, r = 0, t = 0, b = 0), mapbox_style="streets", mapbox_accesstoken=map_api
         )
     else:
         customer_map = px.scatter_mapbox(
