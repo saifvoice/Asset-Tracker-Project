@@ -47,7 +47,7 @@ navbar = dbc.Navbar(
                 ], align='center', className='g-0'),
             ], href='/'),
         ], align='start', class_name='col-3'),
-        dbc.Col(html.H1('Save-80 Geolocator'), class_name='col-6 text-center'),
+        dbc.Col(html.H1('Save-80 Geolocator'), class_name='col-6 text-center header-text'),
         dbc.Col([
             dbc.NavbarToggler(id='nav-toggler', n_clicks=0),
             dbc.Collapse(nav, id='navbar-collapse', is_open=False, navbar=True)
