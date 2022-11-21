@@ -8,7 +8,7 @@ import pandas as pd
 
 ##### Database Configuration ######
 config = configparser.ConfigParser()
-config.read('local_db.ini')
+config.read('cloud_db.ini')
 hostname = config['HOST_DATA']['hostname']
 username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']
@@ -49,6 +49,6 @@ df = df.transpose()
 df['phone']= df['phone'].apply(lambda x: str(x))
 # print(type(df['phone'][0]))
 
-# df.to_sql(name = 'customer_profile', con=engine, if_exists='append', index=False)
+df.to_sql(name = 'customer_profile', con=engine, if_exists='append', index=False)
 
 

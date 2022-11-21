@@ -7,7 +7,7 @@ from sqlalchemy import create_engine, engine_from_config
 
 ##### Database Configuration ######
 config = configparser.ConfigParser()
-config.read('local_db.ini')
+config.read('cloud_db.ini')
 hostname = config['HOST_DATA']['hostname']
 username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']

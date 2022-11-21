@@ -16,7 +16,7 @@ from flask_caching import Cache
 
 ##### Database Configuration ######
 config = configparser.ConfigParser()
-config.read('local_db.ini')
+config.read('cloud_db.ini')
 hostname = config['HOST_DATA']['hostname']
 username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']
@@ -58,12 +58,12 @@ navbar = dbc.Navbar(
 app = DashProxy(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], transforms=[ServersideOutputTransform()])
 app.title = "Save-80"
 server = app.server
-cache = Cache(app.server, config={
-    'CACHE_TYPE': 'filesystem',
-    'CACHE_DIR': 'cache-directory',
-    # should be equal to maximum number of users on the app at a single time
-    # higher numbers will store more data in the filesystem / redis cache
-    'CACHE_THRESHOLD': 5})
+# cache = Cache(app.server, config={
+#     'CACHE_TYPE': 'filesystem',
+#     'CACHE_DIR': 'cache-directory',
+#     # should be equal to maximum number of users on the app at a single time
+#     # higher numbers will store more data in the filesystem / redis cache
+#     'CACHE_THRESHOLD': 5})
 fss = FileSystemStore(threshold=5)
 
 main_layout = dbc.Container([
