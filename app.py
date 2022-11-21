@@ -33,7 +33,7 @@ nav = dbc.Nav([
         dbc.NavItem(dbc.NavLink("Register", id='register', href='/register'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Records", id='records', href='/records'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Logout", id='logout', href='/login'), class_name='me-1')
-],navbar=True, justified=True, class_name='ms-auto fs-5')
+],navbar=True, justified=True, class_name='mx-auto fs-5')
 
 navbar = dbc.Navbar(
     dbc.Container([
@@ -43,15 +43,20 @@ navbar = dbc.Navbar(
                     dbc.Col([
                         html.Img(src='assets/tbcn-logo2.png', width=200, height=100,className='navbar-brand rounded float-start'),
                     ]),
-                    dbc.Col(html.Img(src='assets/atmosfair.png', width=200, height=100,className='navbar-brand rounded float-start'))
+                    # dbc.Col(html.Img(src='assets/atmosfair.png', width=200, height=100,className='navbar-brand rounded float-start'))
                 ], align='center', className='g-0'),
             ], href='/'),
         ], align='start', class_name='col-3'),
-        dbc.Col(html.H1('Save-80 Geolocator'), class_name='col-6 text-center header-text'),
         dbc.Col([
+            html.H2('Save-80 Geolocator'),
             dbc.NavbarToggler(id='nav-toggler', n_clicks=0),
             dbc.Collapse(nav, id='navbar-collapse', is_open=False, navbar=True)
-        ])
+        ],class_name='col-6 text-center header-text'),
+        dbc.Col(html.Img(src='assets/atmosfair.png', width=200, height=100,className='navbar-brand rounded float-end'))
+        # dbc.Col([
+        #     dbc.NavbarToggler(id='nav-toggler', n_clicks=0),
+        #     dbc.Collapse(nav, id='navbar-collapse', is_open=False, navbar=True)
+        # ])
     ], fluid=True, class_name='d-flex justify-content-center')
 ,id='navbar', class_name='navbar')
 
@@ -72,7 +77,7 @@ FOOTER_STYLE = {
     "bottom": 0,
     "left": 0,
     "right": 0,
-    "height": "8rem",
+    "height": "6rem",
     "padding": "1rem 1rem",
     "background-color": "gray",
 }
