@@ -15,31 +15,41 @@ password = config['USER_DATA']['password']
 database = config['USER_DATA']['database']
 
 #### Connection ####
-# config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
-# engine = engine_from_config(config, prefix='db.')
+config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
+engine = engine_from_config(config, prefix='db.')
 
 ###### DataFrames #####
-# customer_profile_df = pd.read_sql_table('customer_profile', engine) 
+customer_profile_df = pd.read_sql_table('customer_profile', engine) 
+map_api = 'pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiRSI-AleU_c_m2tHWAP7Q'
+hovertemplate = ('<b>Name: </b>: %{customdata[1]} <br>' +
+                '<b>Address: </b>: %{customdata[2]}<br>' + 
+                '<b>Phone No.: </b>: %{customdata[3]}<br>' +
+                '<b>Product ID.: </b>: %{customdata[4]}<br>')
+customer_map = px.scatter_mapbox(
+    customer_profile_df, lat='latitude', lon='longitude',
+    hover_name='name', custom_data=['id', 'name', 'address', 'phone', 'nin', 'asset_count', 'latitude', 'longitude'],
+    hover_data={'name': False, 'latitude':False, 'longitude':False, 'asset_count':True},
+    zoom=6, center=dict(lat=9.0765, lon=8),
+    mapbox_style = 'carto-positron', height=800, )
+customer_map.update_traces(marker=dict(size=15, color='#fe6b6b'), hovertemplate=hovertemplate)
+customer_map.update_layout(
+    legend =dict(title_text = '', orientation='h', x=0.4, font_size=15, font_color='#FFFFFF'), paper_bgcolor='#E5ECF6',
+    margin = dict(l = 0, r = 0, t = 0, b = 0), mapbox_style="streets", mapbox_accesstoken=map_api,
+    hoverlabel = dict(bgcolor="#666DE9", font_size=15, font_color='whitesmoke')
+)
 
-# customer_map = px.scatter_mapbox(
-#     customer_profile_df, lat='latitude', lon='longitude',
-#     hover_name='name', custom_data=['id', 'name', 'address', 'phone', 'nin', 'asset_count', 'latitude', 'longitude'],
-#     hover_data={'name': False, 'latitude':False, 'longitude':False, 'asset_count':True},
-#     zoom=6, center=dict(lat=9.0765, lon=8),
-#     mapbox_style = 'carto-positron', height=800, )
-# customer_map.update_traces(marker=dict(size=15, color='#fe6b6b'))
-# customer_map.update_layout(
-#     legend =dict(title_text = '', orientation='h', x=0.4, font_size=15, font_color='#FFFFFF'), paper_bgcolor='#E5ECF6',
-#     margin = dict(l = 0, r = 0, t = 0, b = 0)
-# )
-
-
-animation= {'frame': { 'redraw': False, }, 'transition': { 'duration': 1000, 'ease': 'linear', }}
+markdown_1 = f'''
+            * **Name:** 
+            * **Address:** 
+            * **Phone No.:** 
+            * **Product ID.: ** 
+            * **No of assets in posession: ** 
+            '''
 
 
 home_layout = dbc.Container([
     dbc.Row([
-        dbc.Col(dcc.Graph(id='customer_map', className='card', animate=True, animation_options=animation, style={'height': '75vh'}), class_name='map h-auto col-sm-12 col-lg-9 rounded h-auto'),
+        dbc.Col(dcc.Graph(figure=customer_map, id='customer_map', className='card', style={'height': '75vh'}), class_name='map h-auto col-sm-12 col-lg-9 rounded h-auto'),
         dbc.Col([
             dcc.Dropdown(
                 options=[
@@ -58,7 +68,7 @@ home_layout = dbc.Container([
                 html.H4('Customer Info', className="fs-3 h4 fw-bold"),
                 html.Hr(),
                 html.Br(),
-                dcc.Markdown(id='info_markdown', className='fs-5 text-start')
+                dcc.Markdown(markdown_1, id='info_markdown', className='fs-5 text-start')
             ])
         ], class_name='card')
         ], align='center', class_name='text-center col-sm-6 col-lg-3')

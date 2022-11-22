@@ -11,6 +11,7 @@ import random
 import plotly.express as px
 from records import customer_records
 from flask_caching import Cache
+import plotly.graph_objs as go
 
 
 ##### Database Configuration ######
@@ -33,7 +34,7 @@ nav = dbc.Nav([
         dbc.NavItem(dbc.NavLink("Register", id='register', href='/register'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Records", id='records', href='/records'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Logout", id='logout', href='/login'), class_name='me-1')
-],navbar=True, justified=True, class_name='mx-auto fs-5')
+],navbar=True, justified=True, class_name='mx-auto fs-4')
 
 navbar = dbc.Navbar(
     dbc.Container([
@@ -42,13 +43,13 @@ navbar = dbc.Navbar(
                 dbc.Row([
                     dbc.Col([
                         html.Img(src='assets/tbcn-logo2.png', width=200, height=100,className='navbar-brand rounded float-start'),
-                    ]),
-                    # dbc.Col(html.Img(src='assets/atmosfair.png', width=200, height=100,className='navbar-brand rounded float-start'))
+                        html.Small('To Be Connected Nigeria', className='light')
+                    ], class_name=''),
                 ], align='center', className='g-0'),
             ], href='/'),
         ], align='start', class_name='col-3'),
         dbc.Col([
-            html.H2('Save-80 Geolocator'),
+            html.H2('Save-80 Geo-locator'),
             dbc.NavbarToggler(id='nav-toggler', n_clicks=0),
             dbc.Collapse(nav, id='navbar-collapse', is_open=False, navbar=True)
         ],class_name='col-6 text-center header-text'),
@@ -85,7 +86,7 @@ FOOTER_STYLE = {
 main_layout = dbc.Container([
     dcc.Store(id='cached_data'),
     dcc.Location(id='location'),
-    dcc.Interval(id='query_data', interval=10*1000),
+    dcc.Interval(id='query_data', interval=5*1000),
     dbc.Row(navbar, class_name='sticky-top'),
     dbc.Row(
             dbc.Col(id='content_container', lg={'size':12}, class_name='content-con')
@@ -135,40 +136,58 @@ def display_content(pathname):
     else:
         return home_layout, True, False, False, False
 
+hovertemplate = ('<b>Name: </b>: %{customdata[1]} <br>' +
+                '<b>Address: </b>: %{customdata[2]}<br>' + 
+                '<b>Phone No.: </b>: %{customdata[3]}<br>' +
+                '<b>Product ID.: </b>: %{customdata[4]}<br>')
+
+
 
 @app.callback(
     Output('customer_map', 'figure'),
+    Input('search_button', 'n_clicks'),
     Input('cached_data', 'data'),
-    Input('customer_map', 'clickData')
+    Input('location', 'pathname'),
+    State('search_by', 'value'),
+    State('customer_dd', 'value'),
+    prevent_initial_call=True
+    # Input('customer_map', 'clickData')
 )
-def plot_map_points(data, clickdata):
-    if clickdata == None:
-        customer_map = px.scatter_mapbox(
-            data, lat='latitude', lon='longitude',
-            hover_name='name', custom_data=['id', 'name', 'address', 'phone', 'nin', 'asset_count', 'latitude', 'longitude'],
-            hover_data={'name': False, 'latitude':False, 'longitude':False, 'asset_count':True},
-            zoom=6, center=dict(lat=9.0765, lon=8),
-            )
-        customer_map.update_traces(marker=dict(size=15, color='#fe6b6b'))
-        customer_map.update_layout(
-            legend =dict(title_text = '', orientation='h', x=0.4, font_size=15, font_color='#FFFFFF'), paper_bgcolor='#E5ECF6',
-            margin = dict(l = 0, r = 0, t = 0, b = 0), mapbox_style="streets", mapbox_accesstoken=map_api
+def plot_map_points(n, data, pathname, by, value):
+    page = unquote(pathname[1:])
+    if by == None or value == None:
+        raise PreventUpdate
+    df = data[data[by] == value]
+    df = df.iloc[[0]]
+    lat = df['latitude'].item()
+    lon = df['longitude'].item()
+    customer_map = px.scatter_mapbox(
+        data, lat='latitude', lon='longitude',
+        hover_name='name', custom_data=['id', 'name', 'address', 'phone', 'nin', 'asset_count', 'latitude', 'longitude'],
+        hover_data={'name': False, 'latitude':False, 'longitude':False, 'asset_count':True},
+        zoom=9, center=dict(lat=lat, lon=lon),
         )
-    else:
-        customer_map = px.scatter_mapbox(
-            data, lat='latitude', lon='longitude',
-            hover_name='name', custom_data=['id', 'name', 'address', 'phone', 'nin', 'asset_count', 'latitude', 'longitude'],
-            hover_data={'name': False, 'latitude':False, 'longitude':False, 'asset_count':True},
-            zoom=10, center=dict(lat=clickdata['points'][0]['lat'], lon=clickdata['points'][0]['lon']),
-            mapbox_style = 'carto-positron', height=800 )
-        customer_map.update_traces(marker=dict(size=15, color='#fe6b6b'))
-        customer_map.update_layout(
-            legend =dict(title_text = '', orientation='h', x=0.4, font_size=15, font_color='#FFFFFF'), paper_bgcolor='#E5ECF6',
-            margin = dict(l = 0, r = 0, t = 0, b = 0)
-        )
+    customer_map.update_traces(marker=dict(size=15, color='#fe6b6b'), hovertemplate = hovertemplate)
+    customer_map.update_layout(
+        legend =dict(title_text = "", orientation='h', x=0.4, font_size=15, font_color='#FFFFFF'), paper_bgcolor='#E5ECF6',
+        margin = dict(l = 0, r = 0, t = 0, b = 0), mapbox_style="streets", mapbox_accesstoken=map_api,
+        hoverlabel = dict(bgcolor="#666DE9", font_size=15, font_color='whitesmoke')
+    )
+    customdata_trace = [df['name'].item(), df['address'].item(), df['phone'].item(), df['nin'].item()]
+
+    hovertemplate_trace = ('<b>Name: ' + customdata_trace[0] + '<br>' +
+                '<b>Address: </b>: ' + customdata_trace[1] + '<br>' + 
+                '<b>Phone No.: </b>: ' + customdata_trace[2] + '<br>' +
+                '<b>Product ID.: </b>: ' + str(customdata_trace[3]) + '<br>')
+    customer_map.add_scattermapbox(
+        below="", lat=[lat], lon=[lon], customdata=customdata_trace, hovertemplate=hovertemplate_trace,
+        showlegend=False, name='',  hoverlabel = dict(bgcolor="#666DE9", font_size=15, font_color='whitesmoke'),
+        marker=dict(size = 25, color='#666DE9')
+    )
 
 
     return customer_map
+
 
 
 
@@ -185,6 +204,8 @@ def dropdown_items(value, data):
     labels = {'name': 'Name', 'phone': 'Phone No.', 'nin':'National ID.'}
     if value == None:
         raise PreventUpdate
+    print(value)
+    print(data[value])
     options = [{'label':value, 'value':value} for value in data[value].tolist()]
     disabled = False
     placeholder = f'Search by {labels[value]}'
@@ -205,39 +226,39 @@ def dropdown_items(value, data):
     State('form_address', 'value'),
     State('form_phone', 'value'),
     State('form_nin', 'value'),
-    State('form_lat', 'value'),
-    State('form_lon', 'value'),
-    # State('asset_dropdown', 'value'),
+    # State('form_lat', 'value'),
+    # State('form_lon', 'value'),
     prevent_initial_call=True
 )
-def enrolment_form(n, name, address, phone, nin, lat, lon, asset):
-    data = {'name': name, 'address': address, 'phone': phone, 'nin': nin, 'latitude':lat, 'longitude':lon, 'asset':asset}
+def enrolment_form(n, name, address, phone, nin):
+    data = {'name': name, 'address': address, 'phone': phone, 'nin': nin}
     for i in data.values():
         if not i:
             color = 'danger'
             is_open = True
             msg = 'Please fill all the given fields'
             return color, is_open, msg
-    config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
-    engine = engine_from_config(config, prefix='db.')
-    query = "insert into customer_profile (name, address, phone, nin, asset_count, latitude, longitude) VALUES(%s, %s, %s, %s, %s, %s, %s)"
-    values = (name, address, phone, nin, 1, lat, lon)
+    # config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
+    # engine = engine_from_config(config, prefix='db.')
+    # query = "insert into customer_profile (name, address, phone, nin, asset_count, latitude, longitude) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+    # values = (name, address, phone, nin, 1, lat, lon)
 
-    engine.execute(query, values)
+    # engine.execute(query, values)
     color = 'success'
     is_open = True
     msg = 'Customer enrolled successfully'
 
     # try:
     #     engine.execute(query, values)
+    #     engine.dispose()
     #     color = 'success'
     #     is_open = True
     #     msg = 'Customer enrolled successfully'
     # except:
+    #     engine.dispose()
     #     color = 'danger'
     #     is_open = True
     #     msg = 'Enrolment failed! Make sure you enter the correct values'
-    engine.dispose()
     
     return color, is_open, msg
 
@@ -293,15 +314,7 @@ def customer_info(n, clickdata, data, by, value):
             * **No of assets in posession: ** {df['asset_count'].item()}
             '''
     else:
-        id = random.randint(1, len(data['id'].tolist())+1)
-        df = data[data['id']==id]
-        markdown_1 = f'''
-            * **Name:** 
-            * **Address:** 
-            * **Phone No.:** 
-            * **Product ID.: ** 
-            * **No of assets in posession: ** 
-            '''
+        raise PreventUpdate
 
     return markdown_1
 

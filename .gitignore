@@ -5,3 +5,4 @@ venv
 .env
 jotter.py
 local_db.ini
+customers.csv
