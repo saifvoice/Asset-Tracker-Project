@@ -148,3 +148,13 @@
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
   } */
+
+  /* .navbar-brand {
+    position: relative;
+  } */
+  small {
+    position: absolute;
+    top: 100px;
+    left:65px;
+    color:#177D3E;
+  }

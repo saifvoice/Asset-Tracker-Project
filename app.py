@@ -44,7 +44,7 @@ navbar = dbc.Navbar(
                     dbc.Col([
                         html.Img(src='assets/tbcn-logo2.png', width=200, height=100,className='navbar-brand rounded float-start'),
                         html.Small('To Be Connected Nigeria', className='light')
-                    ], class_name=''),
+                    ], class_name='col-3 align-center'),
                 ], align='center', className='g-0'),
             ], href='/'),
         ], align='start', class_name='col-3'),
@@ -204,8 +204,6 @@ def dropdown_items(value, data):
     labels = {'name': 'Name', 'phone': 'Phone No.', 'nin':'National ID.'}
     if value == None:
         raise PreventUpdate
-    print(value)
-    print(data[value])
     options = [{'label':value, 'value':value} for value in data[value].tolist()]
     disabled = False
     placeholder = f'Search by {labels[value]}'

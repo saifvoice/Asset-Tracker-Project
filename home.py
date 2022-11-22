@@ -71,7 +71,7 @@ home_layout = dbc.Container([
                 dcc.Markdown(markdown_1, id='info_markdown', className='fs-5 text-start')
             ])
         ], class_name='card')
-        ], align='center', class_name='text-center col-sm-6 col-lg-3')
+        ], align='center', class_name='text-center col-sm-6 col-lg-3 mx-auto')
     ], class_name='align-top')
 ], fluid=True, class_name='mt-3 py-4 rounded')
 
