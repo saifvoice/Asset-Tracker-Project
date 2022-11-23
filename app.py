@@ -12,11 +12,12 @@ import plotly.express as px
 from records import customer_records
 from flask_caching import Cache
 import plotly.graph_objs as go
+from search import search_layout
 
 
 ##### Database Configuration ######
 config = configparser.ConfigParser()
-config.read('cloud_db.ini')
+config.read('local_db.ini')
 hostname = config['HOST_DATA']['hostname']
 username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']
@@ -28,7 +29,7 @@ map_api = 'pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiR
 # config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
 # engine = engine_from_config(config, prefix='db.')
 # engine.dispose()
-content = ['home', 'register', 'records']
+content = ['home', 'register', 'records', 'login']
 nav = dbc.Nav([
         dbc.NavItem(dbc.NavLink("Home", id='home', href='/home'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Register", id='register', href='/register'),  class_name='me-1'),
@@ -78,9 +79,7 @@ FOOTER_STYLE = {
     "bottom": 0,
     "left": 0,
     "right": 0,
-    "height": "6rem",
-    "padding": "1rem 1rem",
-    "background-color": "gray",
+    'height':'50px'
 }
 
 main_layout = dbc.Container([
@@ -94,12 +93,12 @@ main_layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             html.H3('Powered by Metaverse®', className='footer_text')
-        ], class_name='text-center footer', style=FOOTER_STYLE)
+        ], class_name='text-center footer bg-light', style=FOOTER_STYLE)
     ], class_name='d-flex justify-content-center')    
 ], fluid=True)
 
 #xl={'size':10, 'offset':1}, lg={'size':10, 'offset':1}
-app.validation_layout = html.Div([main_layout, home_layout, form_layout, customer_records])
+app.validation_layout = html.Div([main_layout, home_layout, form_layout, customer_records, search_layout])
 
 app.layout = main_layout
 
@@ -133,6 +132,8 @@ def display_content(pathname):
             return form_layout, False, True, False, False
         if page == 'records':
             return customer_records, False, False, True, False
+        if page == 'login':
+            return search_layout, False, False, False, True
     else:
         return home_layout, True, False, False, False
 
@@ -147,14 +148,12 @@ hovertemplate = ('<b>Name: </b>: %{customdata[1]} <br>' +
     Output('customer_map', 'figure'),
     Input('search_button', 'n_clicks'),
     Input('cached_data', 'data'),
-    Input('location', 'pathname'),
     State('search_by', 'value'),
     State('customer_dd', 'value'),
     prevent_initial_call=True
     # Input('customer_map', 'clickData')
 )
-def plot_map_points(n, data, pathname, by, value):
-    page = unquote(pathname[1:])
+def plot_map_points(n, data, by, value):
     if by == None or value == None:
         raise PreventUpdate
     df = data[data[by] == value]
