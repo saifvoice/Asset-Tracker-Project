@@ -8,7 +8,7 @@ import pandas as pd
 
 ##### Database Configuration ######
 config = configparser.ConfigParser()
-config.read('local_db.ini')
+config.read('cloud_db.ini')
 hostname = config['HOST_DATA']['hostname']
 username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']
@@ -49,31 +49,38 @@ markdown_1 = f'''
 
 home_layout = dbc.Container([
     dbc.Row([
-        dbc.Col(dcc.Graph(figure=customer_map, id='customer_map', className='card', style={'height': '75vh'}), class_name='map h-auto col-sm-12 col-lg-9 rounded h-auto'),
         dbc.Col([
             dcc.Dropdown(
-                options=[
-                    {'label':'Name', 'value':'name'},
-                    {'label':'Phone No.', 'value':'phone'},
-                    {'label':'National ID.', 'value':'nin'}
-                ],
-                id='search_by', placeholder = 'Search by', className='dropdown my-3', searchable=False, clearable=False
+                id = 'home_search', placeholder= 'search name or product id ', className='dropdown hdd', optionHeight=50,
             ),
-            dcc.Dropdown(
-                id = 'customer_dd', placeholder= 'Search customer', className='dropdown', optionHeight=50, disabled=True
-            ),
-            dbc.Button('Search', id='search_button', class_name='search_btn my-3'),
-            dbc.Card([
-            dbc.CardBody([
-                html.H4('Customer Info', className="fs-3 h4 fw-bold"),
-                html.Hr(),
-                html.Br(),
-                dcc.Markdown(markdown_1, id='info_markdown', className='fs-5 text-start')
-            ])
-        ], class_name='card')
-        ], align='center', class_name='text-center col-sm-6 col-lg-3 mx-auto')
+        ], class_name='col-lg-2 mx-auto mb-3')
+    ]),
+    dbc.Row([
+        dbc.Col(dcc.Graph(figure=customer_map, id='customer_map', className='card', style={'height': '75vh'}), class_name='map mx-auto col-sm-11 rounded h-auto'),
+        # dbc.Col([
+        #     dcc.Dropdown(
+        #         options=[
+        #             {'label':'Name', 'value':'name'},
+        #             {'label':'Phone No.', 'value':'phone'},
+        #             {'label':'National ID.', 'value':'nin'}
+        #         ],
+        #         id='search_by', placeholder = 'Search by', className='dropdown my-3', searchable=False, clearable=False
+        #     ),
+        #     dcc.Dropdown(
+        #         id = 'customer_dd', placeholder= 'Search customer', className='dropdown', optionHeight=50, disabled=True
+        #     ),
+        #     dbc.Button('Search', id='search_button', class_name='search_btn my-3'),
+        #     dbc.Card([
+        #     dbc.CardBody([
+        #         html.H4('Customer Info', className="fs-3 h4 fw-bold"),
+        #         html.Hr(),
+        #         html.Br(),
+        #         dcc.Markdown(markdown_1, id='info_markdown', className='fs-5 text-start')
+        #     ])
+        # ], class_name='card')
+        # ], align='center', class_name='text-center col-sm-6 col-lg-3 mx-auto')
     ], class_name='align-top')
-], fluid=True, class_name='mt-3 py-4 rounded')
+], fluid=True, class_name='mt-2 mx-0 py-0 px-0 rounded')
 
 # engine.dispose()
 

@@ -17,7 +17,7 @@ from search import search_layout
 
 ##### Database Configuration ######
 config = configparser.ConfigParser()
-config.read('local_db.ini')
+config.read('cloud_db.ini')
 hostname = config['HOST_DATA']['hostname']
 username = config['USER_DATA']['username']
 password = config['USER_DATA']['password']
@@ -34,7 +34,7 @@ nav = dbc.Nav([
         dbc.NavItem(dbc.NavLink("Home", id='home', href='/home'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Register", id='register', href='/register'),  class_name='me-1'),
         dbc.NavItem(dbc.NavLink("Records", id='records', href='/records'),  class_name='me-1'),
-        dbc.NavItem(dbc.NavLink("Logout", id='logout', href='/login'), class_name='me-1')
+        dbc.NavItem(dbc.NavLink("Search", id='logout', href='/login'), class_name='me-1')
 ],navbar=True, justified=True, class_name='mx-auto fs-4')
 
 navbar = dbc.Navbar(
@@ -79,7 +79,7 @@ FOOTER_STYLE = {
     "bottom": 0,
     "left": 0,
     "right": 0,
-    'height':'50px'
+    'height':'80px'
 }
 
 main_layout = dbc.Container([
@@ -92,10 +92,18 @@ main_layout = dbc.Container([
         ),
     dbc.Row([
         dbc.Col([
+            html.Small('13a, Mambila Street, Aso Drive, Abuja.', className='m-info'),
+            html.A('www.tbcn.com.ng', href='http://tbcn.com.ng')
+        ], class_name='me-auto info_footer'),
+        dbc.Col([
             html.H3('Powered by Metaverse®', className='footer_text')
-        ], class_name='text-center footer bg-light', style=FOOTER_STYLE)
-    ], class_name='d-flex justify-content-center')    
-], fluid=True)
+        ], class_name='text-center footer mt-0 bg-light'),
+        dbc.Col([
+            html.Small('To Be Connected Nigeria®', className='m-info ms-auto'),
+            html.Small('2022©', className='ms-auto')
+        ], class_name='text-center info_footer bg-light')
+    ], class_name='d-flex justify-content-center',  style=FOOTER_STYLE)    
+], fluid=True, class_name='')
 
 #xl={'size':10, 'offset':1}, lg={'size':10, 'offset':1}
 app.validation_layout = html.Div([main_layout, home_layout, form_layout, customer_records, search_layout])
@@ -146,17 +154,21 @@ hovertemplate = ('<b>Name: </b>: %{customdata[1]} <br>' +
 
 @app.callback(
     Output('customer_map', 'figure'),
-    Input('search_button', 'n_clicks'),
+    # Input('search_button', 'n_clicks'),
+    Input('home_search', 'value'),
     Input('cached_data', 'data'),
-    State('search_by', 'value'),
-    State('customer_dd', 'value'),
+    # State('search_by', 'value'),
+    # State('customer_dd', 'value'),
     prevent_initial_call=True
     # Input('customer_map', 'clickData')
 )
-def plot_map_points(n, data, by, value):
-    if by == None or value == None:
+def plot_map_points(value, data):
+    if value==None:
         raise PreventUpdate
-    df = data[data[by] == value]
+    if type(value) == str:
+        df = data[data['name']==value]
+    else:
+        df = data[data['nin']==value]
     df = df.iloc[[0]]
     lat = df['latitude'].item()
     lon = df['longitude'].item()
@@ -211,6 +223,22 @@ def dropdown_items(value, data):
     return options, disabled, placeholder
 
 
+@app.callback(
+    Output('home_search', 'options'),
+    Input('cached_data', 'data')
+)
+def dropdown_items(data):
+    names = data['name'].tolist()
+    nin = data['nin'].tolist()
+    for i in nin:
+        names.append(i)
+    
+    options = [{'label':value, 'value':value} for value in names]
+
+
+    return options
+
+
 
 
 
@@ -261,46 +289,69 @@ def enrolment_form(n, name, address, phone, nin):
 
 
 
-@app.callback(
-    Output('customer_map', 'clickData'),
-    Input('search_button', 'n_clicks')
-)
-def clear_clickdata(n):
-    return None
+# @app.callback(
+#     Output('customer_map', 'clickData'),
+#     Input('search_button', 'n_clicks')
+# )
+# def clear_clickdata(n):
+#     return None
     
+
+
+# @app.callback(
+#     Output('info_markdown', 'children'),
+#     Input('search_button', 'n_clicks'),
+#     Input('customer_map', 'clickData'),
+#     Input('cached_data', 'data'),
+#     State('search_by', 'value'),
+#     State('customer_dd', 'value')
+# )
+# def customer_info(n, clickdata, data, by, value):
+#     if clickdata != None and value != None:
+#         df = data[data[by]==value]
+#         df = df.iloc[[0]]
+#         markdown_1 = f'''
+#             * **Name:** {df['name'].item()}
+#             * **Address:** {df['address'].item()}
+#             * **Phone No.:** {df['phone'].item()}
+#             * **Product ID.: ** {df['nin'].item()}
+#             * **No of assets in posession: ** {df['asset_count'].item()}
+#             '''
+    
+#     elif clickdata != None and value == None:
+#         id = clickdata['points'][0]['customdata'][0]
+#         df = data[data['id']==id]
+#         markdown_1 = f'''
+#             * **Name:** {df['name'].item()}
+#             * **Address:** {df['address'].item()}
+#             * **Phone No.:** {df['phone'].item()}
+#             * **Product ID.: ** {df['nin'].item()}
+#             * **No of assets in posession: ** {df['asset_count'].item()}
+#             '''
+#     elif clickdata == None and value != None:
+#         df = data[data[by]==value]
+#         df = df.iloc[[0]]
+#         markdown_1 = f'''
+#             * **Name:** {df['name'].item()}
+#             * **Address:** {df['address'].item()}
+#             * **Phone No.:** {df['phone'].item()}
+#             * **Product ID.: ** {df['nin'].item()}
+#             * **No of assets in posession: ** {df['asset_count'].item()}
+#             '''
+#     else:
+#         raise PreventUpdate
 
 
 @app.callback(
     Output('info_markdown', 'children'),
     Input('search_button', 'n_clicks'),
-    Input('customer_map', 'clickData'),
+    # Input('customer_map', 'clickData'),
     Input('cached_data', 'data'),
     State('search_by', 'value'),
     State('customer_dd', 'value')
 )
-def customer_info(n, clickdata, data, by, value):
-    if clickdata != None and value != None:
-        df = data[data[by]==value]
-        df = df.iloc[[0]]
-        markdown_1 = f'''
-            * **Name:** {df['name'].item()}
-            * **Address:** {df['address'].item()}
-            * **Phone No.:** {df['phone'].item()}
-            * **Product ID.: ** {df['nin'].item()}
-            * **No of assets in posession: ** {df['asset_count'].item()}
-            '''
-    
-    elif clickdata != None and value == None:
-        id = clickdata['points'][0]['customdata'][0]
-        df = data[data['id']==id]
-        markdown_1 = f'''
-            * **Name:** {df['name'].item()}
-            * **Address:** {df['address'].item()}
-            * **Phone No.:** {df['phone'].item()}
-            * **Product ID.: ** {df['nin'].item()}
-            * **No of assets in posession: ** {df['asset_count'].item()}
-            '''
-    elif clickdata == None and value != None:
+def customer_info(n, data, by, value):
+    if value != None:
         df = data[data[by]==value]
         df = df.iloc[[0]]
         markdown_1 = f'''

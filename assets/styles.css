@@ -20,11 +20,11 @@
 }
 
 .nav-item a:hover {
-    border-bottom: 4px solid #888;
+    border-bottom: 4px solid #71B280;
 }
 
 .nav-item .active {
-    border-bottom: 4px solid rgb(1, 33, 1);
+    border-bottom: 4px solid #134E5E;
 }
 
 .container-shadow {
@@ -121,7 +121,7 @@
   }
 
 /* .content-con {
-    height: 100vh;
+    background-image: url(worldmap-4k.jpg)
   } */
 
   .footer_text {
@@ -145,9 +145,23 @@
   /* .navbar-brand {
     position: relative;
   } */
-  small {
+  .navbar small {
     position: fixed;
     top: 100px;
     left:60px;
     color:#177D3E;
   }
+
+ .Select-arrow {
+    display: none;
+  }
+
+  .info_footer {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10;
+  }
+
+.m-info {
+  margin-top: 30px;
+}
