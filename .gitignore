@@ -6,3 +6,4 @@ venv
 jotter.py
 local_db.ini
 customers.csv
+file_system_store
