@@ -25,11 +25,6 @@ database = config['USER_DATA']['database']
 
 map_api = 'pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiRSI-AleU_c_m2tHWAP7Q'
 
-# #### Connection ####
-# config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
-# engine = engine_from_config(config, prefix='db.')
-# engine.dispose()
-
 style_2 = {
     'color': '#AAE0EB'
 }
@@ -100,7 +95,7 @@ content_con = {
 main_layout = dbc.Container([
     dcc.Store(id='cached_data'),
     dcc.Location(id='location'),
-    dcc.Interval(id='query_data', interval=5*1000),
+    dcc.Interval(id='query_data', interval=10*1000),
     dbc.Row(navbar, class_name='sticky-top'),
     dbc.Row(
             dbc.Col(id='content_container', lg={'size':12}, class_name='content-con', style=content_con)
