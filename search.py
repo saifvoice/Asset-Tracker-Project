@@ -31,6 +31,6 @@ search_layout = html.Div(
                 html.Br(),
                 dcc.Markdown(markdown_1, id='info_markdown', className='fs-5 text-start')
             ])
-        ], class_name='card')
-        ], align='center', class_name='text-center col-sm-6 col-lg-3 mx-auto')
+        ], class_name='card mt-5')
+        ], align='center', class_name='text-center col-sm-6 col-lg-3 mx-auto mt-5')
 )

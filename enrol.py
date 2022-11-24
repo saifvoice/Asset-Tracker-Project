@@ -86,7 +86,13 @@ form = dbc.Form([
 ], id='enrol_form')
 
 
+style_1 = {
+    "background": "rgba(255,255,255,0.5)",
+   " -webkit-backdrop-filter": 'blur(10px)',
+   ' backdrop-filter':' blur(10px)',
+   ' border': '1px solid rgba(255,255,255,0.25)'
+}
 
 form_layout = dbc.Container([
-    dbc.Col(form, class_name='col-sm-10 col-lg-8 p-4 container-shadow'),
+    dbc.Col(form, class_name='col-sm-10 col-lg-8 p-4 container-shadow glassmorph', style=style_1),
 ], class_name='my-4 py-4 rounded d-flex justify-content-center')
