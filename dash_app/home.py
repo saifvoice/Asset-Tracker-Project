@@ -1,8 +1,8 @@
-from dash import Dash, html, dcc, Input, Output
+from dash import dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import configparser
-from sqlalchemy import create_engine, engine_from_config
+from sqlalchemy import engine_from_config
 import pandas as pd
 
 
@@ -57,31 +57,9 @@ home_layout = dbc.Container([
     ]),
     dbc.Row([
         dbc.Col(dcc.Graph(figure=customer_map, id='customer_map', className='card', style={'height': '75vh'}), class_name='map mx-auto col-sm-11 rounded h-auto'),
-        # dbc.Col([
-        #     dcc.Dropdown(
-        #         options=[
-        #             {'label':'Name', 'value':'name'},
-        #             {'label':'Phone No.', 'value':'phone'},
-        #             {'label':'National ID.', 'value':'nin'}
-        #         ],
-        #         id='search_by', placeholder = 'Search by', className='dropdown my-3', searchable=False, clearable=False
-        #     ),
-        #     dcc.Dropdown(
-        #         id = 'customer_dd', placeholder= 'Search customer', className='dropdown', optionHeight=50, disabled=True
-        #     ),
-        #     dbc.Button('Search', id='search_button', class_name='search_btn my-3'),
-        #     dbc.Card([
-        #     dbc.CardBody([
-        #         html.H4('Customer Info', className="fs-3 h4 fw-bold"),
-        #         html.Hr(),
-        #         html.Br(),
-        #         dcc.Markdown(markdown_1, id='info_markdown', className='fs-5 text-start')
-        #     ])
-        # ], class_name='card')
-        # ], align='center', class_name='text-center col-sm-6 col-lg-3 mx-auto')
     ], class_name='align-top')
 ], fluid=True, class_name='mt-2 mx-0 py-0 px-0 rounded')
 
-# engine.dispose()
+engine.dispose()
 
     

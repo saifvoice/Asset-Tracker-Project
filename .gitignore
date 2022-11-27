@@ -1,8 +1,4 @@
 __pycache__
-venv
-*.pyc
-.DS_Store
-.env
-jotter.py
 local_db.ini
-customers.csv
+jotter.py
+.gcloudignore

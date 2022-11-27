@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+        <img class="mb-4" src="../static/tbcn-logo2.png" alt="" width="100" height="60">
+        <h1 class="h3 mb-3 fw-normal">Reset Password</h1>
+        <div class="form-floating">
+            {% if form.email.errors %}
+                {{ form.email(class="form-control form-control is-invalid", id="floatingPassword") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.email(class="form-control", id="floatingPassword") }}
+            {% endif %}
+            <label for="floatingPassword">Enter your email address</label>
+        </div>
+    <div>
+        {{ form.submit(class="w-100 btn btn-lg btn-primary") }}
+    </div>
+</form>
+
+
+{% endblock content %}

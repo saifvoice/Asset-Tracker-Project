@@ -1,24 +1,5 @@
-from dash import Dash, html, dcc, Input, Output
+from dash import html
 import dash_bootstrap_components as dbc
-import plotly.express as px
-import configparser
-from sqlalchemy import create_engine, engine_from_config
-import pandas as pd
-
-
-##### Database Configuration ######
-config = configparser.ConfigParser()
-config.read('cloud_db.ini')
-hostname = config['HOST_DATA']['hostname']
-username = config['USER_DATA']['username']
-password = config['USER_DATA']['password']
-database = config['USER_DATA']['database']
-
-#### Connection ####
-config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
-engine = engine_from_config(config, prefix='db.')
-
-# enrol_form = dbc.
 
 
 
@@ -60,20 +41,6 @@ coordinates_input = html.Div(
         ], class_name="row")
     ],
     className="mb-3")
-
-# assets = html.Div(
-#     [
-#         dbc.Label("Asset Given", html_for="asset_dropdown"),
-#         dcc.Dropdown(
-#             id="asset_dropdown",
-#             options=[
-#                 {"label": "asset 1", "value": "asset 1"},
-#                 {"label": "asset 2", "value": "asset 2"},
-#             ],
-#         ),
-#     ],
-#     className="mb-3",
-# )
 
 form = dbc.Form([
     html.H3('Customer Enrolment Form', className='text-center'),
