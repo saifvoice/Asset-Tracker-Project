@@ -5,12 +5,12 @@
     -webkit-box-shadow: 3px 3px 0 -30px #dddddd;
     -moz-box-shadow: 3px 3px 0 -30px #dddddd;
     box-shadow: 3px 3px 0 -30px #dddddd;
-    /* background: #d7d7d7;
+    background: #d7d7d7;
     background: -webkit-linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
-    background: linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%); */
-    background: #bdc3c7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
+    /* background: #bdc3c7; 
+    background: -webkit-linear-gradient(to bottom, #2c3e50, #bdc3c7); 
+    background: linear-gradient(to bottom, #2c3e50, #bdc3c7);  */
 
 
     padding-bottom: 25px;
@@ -25,13 +25,13 @@
     line-height: 3rem;
 } */
 
-.infoheader {
+/* .infoheader {
     color: aqua;
-}
+} */
 
-.nav-link {
+/* .nav-link {
   color: chartreuse;
-}
+} */
 
 .nav-item a:hover {
     border-bottom: 4px solid #233b42;
@@ -61,21 +61,21 @@
     -webkit-box-shadow: 3px 3px 0 -30px #dddddd;
     -moz-box-shadow: 3px 3px 0 -30px #dddddd;
     box-shadow: 3px 3px 0 -30px #dddddd;
-    /* background: #d7d7d7;
+    background: #d7d7d7;
     background: -webkit-linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
-    background: linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%); */
+    background: linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
 
-    background: rgba(255,255,255,0.5);
+    /* background: rgba(255,255,255,0.5);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.25); */
 }
 
 .glassmorph {
-    background: rgba(255,255,255,0.5);
+    /* background: rgba(255,255,255,0.5);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.25); */
 }
 
 /* ==========Dropdown Styling=========== */

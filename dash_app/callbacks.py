@@ -3,15 +3,16 @@ from dash.exceptions import PreventUpdate
 from dash_app.home import home_layout
 from dash_app.enrol import form_layout
 from urllib.parse import unquote
-import configparser
-from sqlalchemy import engine_from_config
 import pandas as pd
 import plotly.express as px
 from dash_app.records import customer_records
 from dash_app.search import search_layout
+from sqlalchemy import engine_from_config
+import configparser
+# from connect_connector import connect_with_connector
+# import os
 
 def register_callbacks(app):
-
     ##### Database Configuration ######
     config = configparser.ConfigParser()
     config.read('cloud_db.ini')
@@ -20,6 +21,7 @@ def register_callbacks(app):
     password = config['USER_DATA']['password']
     database = config['USER_DATA']['database']
 
+    # map_api = os.environ['MAPBOX_API']
     map_api = 'pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiRSI-AleU_c_m2tHWAP7Q'
     content = ['home', 'register', 'records', 'search']
 
@@ -33,6 +35,7 @@ def register_callbacks(app):
     def query_data(n):
         config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
         engine = engine_from_config(config, prefix='db.')
+        # engine = connect_with_connector()
 
         df = pd.read_sql_table('customer_profile', engine)
         engine.dispose()
@@ -169,11 +172,12 @@ def register_callbacks(app):
                 return color, is_open, msg
         config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
         engine = engine_from_config(config, prefix='db.')
+        # engine = connect_with_connector()
         query = "insert into customer_profile (name, address, phone, nin) VALUES(%s, %s, %s, %s)"
         values = (name, address, phone, nin)
         try:
-            engine.execute(query, values)
-            engine.dispose()
+            with engine.connect() as conn:
+                conn.execute(query, values)
             color = 'success'
             is_open = True
             msg = 'Customer enrolled successfully'

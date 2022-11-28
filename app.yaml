@@ -1,5 +1,7 @@
 runtime: python38
 
+instance_class: F4
+
 
 
 handlers:
@@ -8,3 +10,12 @@ handlers:
 
 - url: /.*
   script: auto
+
+env_variables:
+    MAPBOX_API: pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiRSI-AleU_c_m2tHWAP7Q
+    SECRET_KEY: 126b88dd6a0cc477d83034ed086bf235
+    INSTANCE_CONNECTION_NAME: tbcn-save80:europe-west3:tbcn-save80-db
+    DB_USER: tbcn-save80-db
+    DB_PUBLIC_IP: 34.159.188.175
+    DB_PASS: u*h}*1Z;x4oOoHBO
+    DB_NAME: tbcn_db

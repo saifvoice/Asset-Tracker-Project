@@ -2,3 +2,5 @@ __pycache__
 local_db.ini
 jotter.py
 .gcloudignore
+app.yaml
+connect_connector.py

@@ -13,6 +13,7 @@ from flask_mail import Mail
 import configparser, jwt, datetime
 from dash_app import create_dash_app
 import pymysql
+import os
 
 ####### Mail Configuration #####
 config = configparser.ConfigParser()
@@ -21,14 +22,24 @@ config.read('mailconfig.ini')
 ##### Database Configuration ######
 config_db = configparser.ConfigParser()
 config_db.read('cloud_db.ini')
-host_name = config_db['HOST_DATA']['hostname']
-user_name = config_db['USER_DATA']['username']
-pass_word = config_db['USER_DATA']['password']
-data_base = config_db['USER_DATA']['database']
+db_public_ip = config_db['HOST_DATA']['hostname']
+db_user = config_db['USER_DATA']['username']
+db_pass = config_db['USER_DATA']['password']
+db_name = config_db['USER_DATA']['database']
+instance_connection_name = config_db['USER_DATA']['INSTANCE_CONNECTION_NAME']
+
+
+######## Configurations ######
+# instance_connection_name = os.environ["INSTANCE_CONNECTION_NAME"]  # e.g. 'project:region:instance'
+# db_user = os.environ.get("DB_USER", "")  # e.g. 'my-db-user'
+# db_pass = os.environ["DB_PASS"]  # e.g. 'my-db-password'
+# db_name = os.environ["DB_NAME"]
+
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = config['USER_DATA']['secret']
-app.config['SQLALCHEMY_DATABASE_URI'] =  f"mysql+pymysql://{user_name}:{pass_word}@{host_name}/{data_base}"
+app.config['SECRET_KEY'] =  config_db['USER_DATA']['SECRET_KEY']
+app.config['SQLALCHEMY_DATABASE_URI'] =  f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}/{db_name}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -219,4 +230,4 @@ def reset_token(token):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

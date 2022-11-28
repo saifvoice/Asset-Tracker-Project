@@ -4,9 +4,11 @@ import plotly.express as px
 import configparser
 from sqlalchemy import engine_from_config
 import pandas as pd
+# from connect_connector import connect_with_connector
+# import os
 
 
-##### Database Configuration ######
+#### Database Configuration ######
 config = configparser.ConfigParser()
 config.read('cloud_db.ini')
 hostname = config['HOST_DATA']['hostname']
@@ -17,10 +19,11 @@ database = config['USER_DATA']['database']
 #### Connection ####
 config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
 engine = engine_from_config(config, prefix='db.')
-
+# engine = connect_with_connector()
 ###### DataFrames #####
-customer_profile_df = pd.read_sql_table('customer_profile', engine) 
+customer_profile_df = pd.read_sql_table('customer_profile', engine)
 map_api = 'pk.eyJ1IjoieWF6aWlkIiwiYSI6ImNsYXI1a2xmczFxOWQzb3RhNWZnODBteTAifQ.tiRSI-AleU_c_m2tHWAP7Q'
+# map_api = os.environ["MAPBOX_API"]
 hovertemplate = ('<b>Name: </b>: %{customdata[1]} <br>' +
                 '<b>Address: </b>: %{customdata[2]}<br>' + 
                 '<b>Phone No.: </b>: %{customdata[3]}<br>' +

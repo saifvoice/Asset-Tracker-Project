@@ -2,10 +2,10 @@ from dash import dash_table
 import dash_bootstrap_components as dbc
 
 style_1 = {
-    "background": "rgba(255,255,255,0.5)",
-   " -webkit-backdrop-filter": 'blur(10px)',
-   ' backdrop-filter':' blur(10px)',
-   ' border': '1px solid rgba(255,255,255,0.25)'
+#     "background": "rgba(255,255,255,0.5)",
+#    " -webkit-backdrop-filter": 'blur(10px)',
+#    ' backdrop-filter':' blur(10px)',
+#    ' border': '1px solid rgba(255,255,255,0.25)'
 }
 
 
@@ -14,11 +14,11 @@ customer_records = dbc.Container(
         dbc.Col([
             dbc.Spinner(dash_table.DataTable(
                 id='customer_table',
-                style_cell = {'minWidth' :95, 'maxWidth':130, 'border': '#D3D3D3'},
-                style_data = {'whiteSpace': 'normal', 'height':'auto', 'color': 'whitesmoke', 'backgroundColor': 'rgba(0,0,0,0.5)'},
-                style_data_conditional = [{'if': {'row_index': 'odd'},'backgroundColor': 'rgba(171,174,197,0.5)', 'color':'#000000'}],
-                style_header = {'textAlign': 'center', 'whiteSpace': 'normal', 'height': 'auto', 'fontWeight': 'bold', 'color': 'white', 'backgroundColor': '#303030'},
-                style_filter = {'color': 'white', 'backgroundColor': '#606368'},
+                style_cell = {'minWidth' :95, 'maxWidth':130},
+                style_data = {'whiteSpace': 'normal', 'height':'auto', 'color': '#303030'},
+                style_data_conditional = [{'if': {'row_index': 'odd'},'backgroundColor': '#EBEBE8'}],
+                style_header = {'textAlign': 'center', 'whiteSpace': 'normal', 'height': 'auto', 'fontWeight': 'bold', 'color': '#222222', 'backgroundColor': '#EBEBE8'},
+                style_filter = {'color': '#000000', 'backgroundColor': '#EBEBE8'},
                 filter_action='native',
                 sort_action='native',
                 sort_mode='single',
