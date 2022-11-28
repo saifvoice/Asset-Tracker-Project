@@ -103,7 +103,7 @@ main_layout = dbc.Container([
 def create_dash_app(server):
     dash_app = DashProxy(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], transforms=[ServersideOutputTransform()], server=server, url_base_pathname='/')
     dash_app.title = "Save-80"
-    # server = dash_app.server
+    server = dash_app.server
     dash_app.validation_layout = html.Div([main_layout, home_layout, form_layout, customer_records, search_layout])
     dash_app.layout = main_layout
 
