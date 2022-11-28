@@ -26,7 +26,7 @@ db_public_ip = config_db['HOST_DATA']['hostname']
 db_user = config_db['USER_DATA']['username']
 db_pass = config_db['USER_DATA']['password']
 db_name = config_db['USER_DATA']['database']
-instance_connection_name = config_db['USER_DATA']['INSTANCE_CONNECTION_NAME']
+# instance_connection_name = config_db['USER_DATA']['INSTANCE_CONNECTION_NAME']
 
 
 ######## Configurations ######
@@ -38,7 +38,7 @@ instance_connection_name = config_db['USER_DATA']['INSTANCE_CONNECTION_NAME']
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] =  config_db['USER_DATA']['SECRET_KEY']
-app.config['SQLALCHEMY_DATABASE_URI'] =  f"mysql+pymysql://{db_user}:{db_pass}@/{db_name}?unix_socket=/cloudsql/tbcn-save80:europe-west3:tbcn-save80-db"
+app.config['SQLALCHEMY_DATABASE_URI'] =  f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}/{db_name}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)

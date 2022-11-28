@@ -17,7 +17,7 @@ password = config['USER_DATA']['password']
 database = config['USER_DATA']['database']
 
 #### Connection ####
-config = {'db.url': f'mysql+pymysql://{username}:{password}@/{database}?unix_socket=/cloudsql/tbcn-save80:europe-west3:tbcn-save80-db'}
+config = {'db.url': f'mysql+pymysql://{username}:{password}@{hostname}/{database}'}
 engine = engine_from_config(config, prefix='db.')
 # engine = connect_with_connector()
 ###### DataFrames #####
