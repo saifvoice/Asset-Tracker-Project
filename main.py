@@ -52,7 +52,6 @@ app.config['MAIL_USERNAME'] = config['USER_DATA']['user']
 app.config['MAIL_PASSWORD'] = config['USER_DATA']['pass']
 mail = Mail(app)
 dash_app = create_dash_app(app)
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
